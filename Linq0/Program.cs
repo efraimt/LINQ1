@@ -9,7 +9,7 @@ namespace Linq0
         static void Main(string[] args)
         {
 
-            int[] numbers = new int[] { 10, 12, 5, 9,10, 87, -15, 3000, 29 };
+            int[] numbers = new int[] { 10, 12, 5, 9, 10, 87, -15, 3000, 29 };
 
             //var innerList = new List<int>();
             //foreach (var num1 in numbers)
@@ -20,8 +20,8 @@ namespace Linq0
 
             //Fethc positive numbers
             var query0 = from num1 in numbers
-                        where num1 >= 0
-                        select num1;
+                         where num1 >= 0
+                         select num1;
 
             var query0N = numbers.Where(num1 => num1 >= 0);
 
@@ -31,7 +31,7 @@ namespace Linq0
             }
 
             Console.WriteLine("==================================");
-            
+
 
             //Fetch 3 first items
             var q2N = numbers.Take(3).ToList();
@@ -55,8 +55,10 @@ namespace Linq0
             Console.WriteLine("==================================");
 
             //Fetch all items of 'numbers' return it * 10
-            var query3 = from number in numbers
-                         select number * 10;
+            var query3 = (from number in numbers
+                          select number * 10);
+            var lst3 = numbers.Select(number => number * 10).ToList();
+
 
             var list = query3.ToList();
 
@@ -81,10 +83,10 @@ namespace Linq0
 
 
             Console.WriteLine("==================================");
-            var query5 = from number in numbers
+            var query5 = (from number in numbers
                          orderby number descending
-                         select number;
-
+                         select number).Take(3);
+            var q5N = numbers.OrderByDescending(n => n).ToList();
             var arr = query5.ToArray();
             foreach (var item in arr)
             {

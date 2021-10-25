@@ -18,6 +18,12 @@ namespace LINQ1
         public short NumberOfBorrowedOut { get; set; }
         public DateTime DatePublished { get; set; }
 
+
+        public bool IsNewBindingNeeded()
+        {
+            return DatePublished.Year < DateTime.Now.AddYears(20).Year;
+        }
+
     }
 
 
@@ -25,14 +31,32 @@ namespace LINQ1
     {
         static void Main(string[] args)
         {
+
+            //var b = new Book();
+
+            var obj = new { FirstName = "Ohad", LastName = "Zriadya" };
+
+            Console.WriteLine(obj.FirstName);
+            Console.WriteLine(obj.LastName);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             List<Book> books = new List<Book>()
             {
-new Book            { Id = 300, Author = "Meir Shalev", Name = "Other Days", DatePublished = new DateTime(1982, 08, 03), NumberOfPages = 367, NumberOfCopies = 10000, NumberOfBorrowedOut = 78,},
-
-
-            new Book { Id = 301, Author = "Albert Einstein", Name = "Black Holes", DatePublished = new DateTime(1919, 1, 01), NumberOfPages = 567, NumberOfCopies = 20000, NumberOfBorrowedOut = 67 }
-
-
+                new Book { Id = 300, Author = "Meir Shalev", Name = "Other Days", DatePublished = new DateTime(1982, 08, 03), NumberOfPages = 367, NumberOfCopies = 10000, NumberOfBorrowedOut = 78,},
+                new Book { Id = 301, Author = "Albert Einstein", Name = "Black Holes", DatePublished = new DateTime(1919, 1, 01), NumberOfPages = 567, NumberOfCopies = 20000, NumberOfBorrowedOut = 67 }
             };
             books.Add(new Book { Id = 1, Author = "Lior Shlein", DatePublished = new DateTime(2009, 05, 17) });
             books.Add(new Book
@@ -60,14 +84,39 @@ new Book            { Id = 300, Author = "Meir Shalev", Name = "Other Days", Dat
 
 
 
-            //Get al books published before 2001
+            //Get all books published before 2001
             var myQuery = books.Where(book => book.DatePublished.Year < 2001);
             foreach (var book in myQuery)
             {
                 Console.WriteLine("{0} {1}", book.Name, book.DatePublished);
             }
 
+            //Get name and published date of all books that was published befor 2001
+            var list1 = (from b in books
+                         where b.DatePublished.Year <= 2000
+                         select b.Name + " " + b.DatePublished).ToList();
 
+            var list1N = books.Where(b => b.DatePublished.Year < 2001)
+                .Select(b => b.Name + " " + b.DatePublished).ToList();
+
+
+
+            var list2 = (from b in books
+                         where b.NumberOfCopies > 10
+                         select b.Name + b.NumberOfCopies).ToList();
+
+
+            //Fetch all books and rertrn name and date published
+            var q3 = from b in books
+                     select new {  b.Name, DatePublished = b.DatePublished };
+            /* pay tension that we can exclude the "Name =" */
+
+            var q3N = books.Select(b => new { b.Name, b.DatePublished });
+
+            foreach (var item in q3N)
+            {
+                Console.WriteLine(item.Name);
+            }
 
         }
     }
